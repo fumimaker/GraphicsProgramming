@@ -21,6 +21,11 @@ function draw(){
   background(255,190,240);
 
   if(hit){
+    var rebound = p5.Vector.sub(pos, objectPos);
+    rebound.normalize();
+    rebound.mult(speed.mag());
+    speed = rebound;
+    
     fill(100,100,100);
   }
   else{
