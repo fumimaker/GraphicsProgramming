@@ -48,6 +48,7 @@ function draw(){
       pos[i].y = height - rad[i] / 2;
       speed[i].y *= -1.0;
     }
+    fill(255,255,255);
     circle(pos[i].x, pos[i].y, rad[i]);
   }
 }
