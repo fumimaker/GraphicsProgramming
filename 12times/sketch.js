@@ -1,54 +1,53 @@
-//var posX;
-//var posY;
-var pos;
+var pos=[];
+var speed = [];
+var rad = [];
+var numParticle;
+var objectPos;
 
 function setup(){
+  numParticle = 20;
   createCanvas(windowWidth, windowHeight);
-  //posX = random(width);
-  //posY = random(height);
-  pos = createVector(random(width),random(height));
-  speed = createVector(random(-10,10), random(-10,10));
-  rad = 100;
-  objectPos = createVector(width/2, height/2);
+  for(var i=0; i<numParticle; i++){
+    pos[i] = createVector(random(width), random(height));
+    speed[i] = createVector(random(-10, 10), random(-10, 10));
+    rad[i] = random(200);
+  }
 }
 
 function draw(){
-  pos.add(speed);
-
-  var hit;
-  hit = collideCircleCircle(pos.x, pos.y, rad, objectPos.x, objectPos.y, rad);
-
-  background(255,190,240);
-
-  if(hit){
-    var rebound = p5.Vector.sub(pos, objectPos);
-    rebound.normalize();
-    rebound.mult(speed.mag());
-    speed = rebound;
-    
-    fill(100,100,100);
+  for(var i=0; i<numParticle; i++){
+    pos[i].add(speed[i]);
+    for(var j=0; j<numParticle; j++){
+      var hit;
+      if(i != j){
+        hit = collideCircleCircle(pos[i].x, pos[i].y, rad[i], pos[j].x, pos[j].y, rad[j]);
+        if(hit){
+          var rebound = p5.Vector.sub(pos[i], pos[j]);
+          rebound.normalize();
+          rebound.mult(speed[i].mag());
+          speed[i] = rebound;
+        }
+      }
+    }
   }
-  else{
-    fill(100,200,100);
-  }
-
-  circle(pos.x, pos.y, rad);
-  circle(objectPos.x, objectPos.y, rad);
-
-  if(pos.x < 0 + rad/2){
-    pos.x = rad/2;
-    speed.x *= -1.0;
-  }
-  else if(pos.x > width - rad/2){
-    pos.x = width - rad/2;
-    speed.x *= -1.0;
-  }
-  else if(pos.y<0 + rad/2){
-    pos.y = rad/2;
-    speed.y *= -1.0;
-  }
-  else if(pos.y > height - rad/2){
-    pos.y = height - rad/2;
-    speed.y *= -1.0;
+  background(255, 190, 240);
+  for(var i=0; i<numParticlel; i++){
+    if (pos[i].x < 0 + rad[i] / 2) {
+      pos[i].x = rad[i] / 2;
+      speed[i].x *= -1.0;
+    }
+    if (pos[i].x > width - rad[i] / 2) {
+      pos[i].x = width - rad[i] / 2;
+      speed[i].x *= -1.0;
+    }
+    if (pos[i].y < 0 + rad[i] / 2) {
+      pos[i].y = rad[i] / 2;
+      speed[i].y *= -1.0;
+    }
+    if (pos[i].y > height - rad[i] / 2) {
+      pos[i].y = height - rad[i] / 2;
+      speed[i].y *= -1.0;
+    }
+    circle(pos[i].x, pos[i].y, rad[i]);
   }
 }
