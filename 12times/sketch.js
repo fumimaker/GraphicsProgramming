@@ -2,14 +2,14 @@
 //var posY;
 var pos=[],speed=[],rad=[];
 var invisible_rad=500;
-var num=500;
+var num=800;
 function setup(){
   createCanvas(windowWidth, windowHeight);
   //posX = random(width);
   //posY = random(height);
   for(var i=0; i<num; i++){
     pos[i] = createVector(random(width), random(height));
-    speed[i] = createVector(random(-50, 50), random(-50, 50));
+    speed[i] = createVector(random(-30, 30), random(-30, 30));
     rad[i] = random(50,60);
   }
 
