@@ -2,14 +2,16 @@
 //var posY;
 var pos=[],speed=[],rad=[];
 var invisible_rad=500;
-var num=800;
+var num=10;
+
 function setup(){
-  createCanvas(windowWidth, windowHeight);
+  //createCanvas(windowWidth, windowHeight);
+  createCanvas(500, 800);
   //posX = random(width);
   //posY = random(height);
   for(var i=0; i<num; i++){
-    pos[i] = createVector(random(width), random(height));
-    speed[i] = createVector(random(-30, 30), random(-30, 30));
+    pos[i] = createVector(random(width), -height);
+    speed[i] = createVector(random(-1, 1), random(0, 5));
     rad[i] = random(50,60);
   }
 
@@ -18,19 +20,24 @@ function setup(){
 
 function draw(){
   background(255, 190, 240);
-  
   for(var i=0; i<num; i++){
-    var hit;
     pos[i].add(speed[i]);
-    hit = collideCircleCircle(pos[i].x, pos[i].y, rad[i], objectPos.x, objectPos.y, invisible_rad);
-    if (hit) {
-      var rebound = p5.Vector.sub(pos[i], objectPos);
-      rebound.normalize();
-      rebound.mult(speed[i].mag());
-      speed[i] = rebound;
+    for(var k=i+1; k<num; k++){
+      
+        var hit;
+        hit = collideCircleCircle(pos[i].x, pos[i].y, rad[i], pos[k].x, pos[k].y, rad[k]);
+        if (hit) {
+          var rebound = p5.Vector.sub(pos[i], objectPos);
+          rebound.normalize();
+          rebound.mult(speed[i].mag());
+          speed[i] = rebound;
+        }
     }
-    noStroke();
+    
+
+    stroke(10);
     fill(255,255,255,50);
+
     circle(pos[i].x, pos[i].y, rad[i]);
     if (pos[i].x < 0 + rad[i] / 2) {
       pos[i].x = rad[i] / 2;
@@ -49,5 +56,6 @@ function draw(){
       speed[i].y *= -1.0;
     }
   }
-  //circle(objectPos.x, objectPos.y, rad);
+  fill(255, 255, 255, 50);
+  circle(objectPos.x, objectPos.y, rad);
 }
