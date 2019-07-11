@@ -2,11 +2,11 @@
 //var posY;
 var pos=[],speed=[],rad=[];
 var invisible_rad=500;
-var num=10;
+var num=5;
 
 function setup(){
   //createCanvas(windowWidth, windowHeight);
-  createCanvas(500, 800);
+  createCanvas(500, 900);
   //posX = random(width);
   //posY = random(height);
   for(var i=0; i<num; i++){
@@ -21,19 +21,17 @@ function setup(){
 function draw(){
   background(255, 190, 240);
   for(var i=0; i<num; i++){
-    pos[i].add(speed[i]);
     for(var k=i+1; k<num; k++){
-      
-        var hit;
-        hit = collideCircleCircle(pos[i].x, pos[i].y, rad[i], pos[k].x, pos[k].y, rad[k]);
-        if (hit) {
-          var rebound = p5.Vector.sub(pos[i], objectPos);
-          rebound.normalize();
-          rebound.mult(speed[i].mag());
-          speed[i] = rebound;
-        }
+      var hit;
+      hit = collideCircleCircle(pos[i].x, pos[i].y, rad[i], pos[k].x, pos[k].y, rad[k]);
+      if (hit) {
+        var rebound = p5.Vector.sub(pos[i], objectPos);
+        rebound.normalize();
+        rebound.mult(speed[i].mag());
+        speed[i] = rebound;
+      }
     }
-    
+    pos[i].add(speed[i]);
 
     stroke(10);
     fill(255,255,255,50);
