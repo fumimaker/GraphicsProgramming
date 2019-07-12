@@ -28,7 +28,7 @@ function draw() {
   }
   fill(255, 255, 255, 50);
   circle(mouseX, mouseY, jiki_rad);
-  if (Date.now() - prev_time > 1/attackRate*1000) {
+  if (Date.now() - prev_time > 1 / attackRate * 1000) {
     attack_particle.push(new Attack_tama());
     prev_time = Date.now();
   }
@@ -89,7 +89,7 @@ class Particle {
     if (this.x < 0 + this.size / 2 || this.x > width - this.size / 2) this.speedx = -1.0 * this.speedx;
     if (this.y < 0) this.speedy = -1.0 * this.speedy;
     if (this.y > height + this.size / 2) this.y = 0;
-    for(var i=0; i<attack_particle.length; i++){
+    for (var i = 0; i < attack_particle.length; i++) {
       if (collideCircleCircle(this.x, this.y, this.size, attack_particle[i].x, attack_particle[i].y, attack_particle[i].size)) {
         this.isHit = true;
         this.heart -= attack_particle[i].strength;
@@ -110,7 +110,7 @@ class Particle {
       fill(255, 255, 255);
       //text(this.ballnum, this.x, this.y, 50, 50);
       var pixsize = 50;
-      text(this.heart, this.x-15, this.y, pixsize, pixsize);
+      text(this.heart, this.x - 15, this.y, pixsize, pixsize);
     }
   }
 }
