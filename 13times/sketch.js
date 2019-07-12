@@ -8,13 +8,13 @@ var attack_particle = [];
 var prev_time = 0, delta_t = 0;
 
 
-function setup(){
+function setup() {
   //createCanvas(windowWidth, windowHeight);
   createCanvas(500, 900);
   //posX = random(width);
   //posY = random(height);
   for (var i = 0; i < 50; i++) {
-    ball[i] = new Particle(i,random(30,100), random(0, 128));
+    ball[i] = new Particle(i, random(30, 100), random(0, 128));
   }
 
   prev_time = Date.now();
@@ -23,28 +23,28 @@ function setup(){
 
 
 
-function draw(){
+function draw() {
   background(255, 190, 240);
   for (var i = 0; i < num; i++) {
     ball[i].update();
     ball[i].draw();
   }
-  for(var i=0; i<num; i++){
-    if(ball[i].isHit){
+  for (var i = 0; i < num; i++) {
+    if (ball[i].isHit) {
       fill(255, 0, 0, 50);
       circle(mouseX, mouseY, jiki_rad);
     }
-    else{
+    else {
       fill(255, 255, 255, 50);
       circle(mouseX, mouseY, jiki_rad);
     }
-    if(Date.now()-prev_time>100){
+    if (Date.now() - prev_time > 100) {
       attack_particle.push(new Attack_tama());
       prev_time = Date.now();
     }
   }
 
-  for(var i=0; i<attack_particle.length; i++){
+  for (var i = 0; i < attack_particle.length; i++) {
     attack_particle[i].update();
     attack_particle[i].draw();
   }
@@ -52,8 +52,8 @@ function draw(){
   //text(delta_t, windowWidth/2, windowHeight/2, 50, 50);
 }
 
-class Attack_tama{
-  constructor(){
+class Attack_tama {
+  constructor() {
     this.x = mouseX;
     this.y = mouseY;
     this.speedx = 0;
@@ -62,60 +62,63 @@ class Attack_tama{
     this.visible = true;
   }
 
-  update(){
+  update() {
     this.x += this.speedx;
     this.y += this.speedy;
-    if(this.y<0) this.visible = false;
+    if (this.y < 0) this.visible = false;
   }
 
-  draw(){
-    fill(255, 255, 255);
-    circle(this.x, this.y, 10);
+  draw() {
+    if (this.visible) {
+      fill(255, 255, 255);
+      circle(this.x, this.y, 10);
+    }
+
   }
 }
 
-class Particle{
+class Particle {
   //member(attribute)属性
-  constructor(ball_num, diameter, col){
+  constructor(ball_num, diameter, col) {
     this.x = random(width);
     this.y = random(height);
     this.size = diameter;
-    this.speedx = random(-1,1);
-    this.speedy = random(0,3);
+    this.speedx = random(-1, 1);
+    this.speedy = random(0, 3);
     this.color = col;
     this.visible = true;
     this.ballnum = ball_num;
     this.isHit = false;
     this.heart = 100;
   }
-  
+
   //method(behavior)振る舞い
-  update(){
+  update() {
     this.x = this.x + this.speedx;
     this.y = this.y + this.speedy;
-    
-    if(this.x<0+this.size/2 || this.x>width-this.size/2) this.speedx = -1.0 * this.speedx;
-    if(this.y<0) this.speedy = -1.0 * this.speedy;
-    if(this.y>height + this.size/2) this.y = 0; 
-    
-    if(collideCircleCircle(this.x, this.y, this.size, mouseX, mouseY, jiki_rad)){
+
+    if (this.x < 0 + this.size / 2 || this.x > width - this.size / 2) this.speedx = -1.0 * this.speedx;
+    if (this.y < 0) this.speedy = -1.0 * this.speedy;
+    if (this.y > height + this.size / 2) this.y = 0;
+
+    if (collideCircleCircle(this.x, this.y, this.size, mouseX, mouseY, jiki_rad)) {
       this.isHit = true;
     }
     else this.isHit = false;
 
-    if(this.isHit) this.heart -= 10; 
+    if (this.isHit) this.heart -= 10;
 
-    if(this.heart<0) this.visible = false;
+    if (this.heart < 0) this.visible = false;
     else this.visible = true;
 
   }
-  
-  draw(){
+
+  draw() {
     noStroke();
-    if(this.visible){
+    if (this.visible) {
       fill(this.color, 200);
       circle(this.x, this.y, this.size);
-      fill(255,255,255);
+      fill(255, 255, 255);
       text(this.ballnum, this.x, this.y, 50, 50);
     }
   }
