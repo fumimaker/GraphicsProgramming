@@ -14,9 +14,6 @@ function setup(){
     ball[i] = new Particle(i,random(30,100), random(0, 128));
   }
 
-  for (var i=0; i<num; i++){
-    attack_particle = new Attack();
-  }
 }
 
 function draw(){
@@ -37,21 +34,6 @@ function draw(){
     }
   }
   
-}
-
-class Attack{
-  constructor(){
-    this.x = mouseX;
-    this.y = mouseY;
-    this.speedx = 0;
-    this.speedy = 5;
-    this.strength = 10;
-    this.visible = true;
-  }
-
-  update(){
-
-  }
 }
 
 class Particle{
