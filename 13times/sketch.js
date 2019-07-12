@@ -47,18 +47,18 @@ class Attack_tama {
     this.speedx = 0;
     this.speedy = -10;
     this.strength = 10;
-    this.visible = true;
     this.size = 10;
+    this.available = true;
   }
 
   update() {
     this.x += this.speedx;
     this.y += this.speedy;
-    if (this.y < 0) this.visible = false;
+    if (this.y < 0) this.available = false;
   }
 
   draw() {
-    if (this.visible) {
+    if (this.available) {
       fill(255, 255, 255);
       circle(this.x, this.y, this.size);
     }
@@ -75,10 +75,10 @@ class Particle {
     this.speedx = random(-1, 1);
     this.speedy = random(0, 3);
     this.color = col;
-    this.visible = true;
     this.ballnum = ball_num;
     this.isHit = false;
     this.heart = _heart;
+    this.available = true;
   }
 
   //method(behavior)振る舞い
@@ -97,14 +97,13 @@ class Particle {
       else this.isHit = false;
     }
 
-    if (this.heart < 0) this.visible = false;
-    else this.visible = true;
+    if (this.heart < 0) this.available = false;
 
   }
 
   draw() {
     noStroke();
-    if (this.visible) {
+    if (this.available) {
       fill(this.color, 200);
       circle(this.x, this.y, this.size);
       fill(255, 255, 255);
