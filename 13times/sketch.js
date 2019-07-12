@@ -16,7 +16,9 @@ function setup(){
   for (var i = 0; i < 50; i++) {
     ball[i] = new Particle(i,random(30,100), random(0, 128));
   }
+
   prev_time = Date.now();
+
 }
 
 
