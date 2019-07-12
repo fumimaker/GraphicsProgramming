@@ -36,7 +36,7 @@ function draw(){
       fill(255, 255, 255, 50);
       circle(mouseX, mouseY, jiki_rad);
     }
-    if(Date.now()-prev_time>500){
+    if(Date.now()-prev_time>100){
       attack_particle.push(new Attack_tama());
       prev_time = Date.now();
     }
@@ -52,8 +52,8 @@ function draw(){
 
 class Attack_tama{
   constructor(){
-    this.x = windowWidth/2;
-    this.y = windowHeight/2;
+    this.x = mouseX;
+    this.y = mouseY;
     this.speedx = 0;
     this.speedy = -5;
     this.strength = 10;
@@ -68,7 +68,7 @@ class Attack_tama{
 
   draw(){
     fill(255, 255, 255);
-    circle(this.x, this.y, 30);
+    circle(this.x, this.y, 10);
   }
 }
 
