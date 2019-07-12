@@ -5,7 +5,7 @@ var ball = [];
 var jiki_rad = 50;
 var attack_particle = [];
 var prev_time = 0, delta_t = 0;
-var attackRate = 100;
+var attackRate = 10;
 
 function setup() {
   //createCanvas(windowWidth, windowHeight);
@@ -13,7 +13,7 @@ function setup() {
   //posX = random(width);
   //posY = random(height);
   for (var i = 0; i < 50; i++) {
-    ball[i] = new Particle(i, random(30, 100), random(0, 128));
+    ball[i] = new Particle(i, random(30, 100), random(0, 128),random(100, 1000));
   }
   prev_time = Date.now();
 }
@@ -68,7 +68,7 @@ class Attack_tama {
 
 class Particle {
   //member(attribute)属性
-  constructor(ball_num, diameter, col) {
+  constructor(ball_num, diameter, col, _heart) {
     this.x = random(width);
     this.y = random(height);
     this.size = diameter;
@@ -78,7 +78,7 @@ class Particle {
     this.visible = true;
     this.ballnum = ball_num;
     this.isHit = false;
-    this.heart = 100;
+    this.heart = _heart;
   }
 
   //method(behavior)振る舞い
