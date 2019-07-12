@@ -67,8 +67,11 @@ class Attack_tama{
   }
 
   draw(){
-    fill(255, 255, 255);
-    circle(this.x, this.y, 10);
+    if(this.visible){
+      fill(255, 255, 255);
+      circle(this.x, this.y, 10);
+    }
+    
   }
 }
 
