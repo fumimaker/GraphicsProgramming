@@ -1,81 +1,76 @@
 //var posX;
 //var posY;
-var pos=[],speed=[],rad=[];
-var invisible_rad=500;
 var num=5;
-
+var ball = [];
 var jiki_rad=50;
-
-function collideUpdate(){
-  for (var i = 0; i < num; i++) {
-    for (var k = i + 1; k < num; k++) {
-      var hit;
-      hit = collideCircleCircle(pos[i].x, pos[i].y, rad[i], pos[k].x, pos[k].y, rad[k]);
-      if (hit) {
-        var rebound = p5.Vector.sub(pos[i], objectPos);
-        rebound.normalize();
-        rebound.mult(speed[i].mag());
-        speed[i] = rebound;
-      }
-    }
-    pos[i].add(speed[i]);
-
-    stroke(10);
-    fill(255, 255, 255, 50);
-
-    circle(pos[i].x, pos[i].y, rad[i]);
-    if (pos[i].x < 0 + rad[i] / 2) {
-      pos[i].x = rad[i] / 2;
-      speed[i].x *= -1.0;
-    }
-    else if (pos[i].x > width - rad[i] / 2) {
-      pos[i].x = width - rad[i] / 2;
-      speed[i].x *= -1.0;
-    }
-    else if (pos[i].y < 0 + rad[i] / 2) {
-      pos[i].y = rad[i] / 2;
-      speed[i].y *= -1.0;
-    }
-    else if (pos[i].y > height - rad[i] / 2) {
-      pos[i].y = height - rad[i] / 2;
-      speed[i].y *= -1.0;
-    }
-  }
-  fill(255, 255, 255, 50);
-  circle(objectPos.x, objectPos.y, rad);
-}
-
-function mouseUpdate(){
-  
-  for(var i=0; i<num; i++){
-    if (collideCircleCircle(pos[i].x, pos[i].y, rad[i], mouseX, mouseY, jiki_rad)){
-      fill(128,128,0,50);
-      ellipse(mouseX, mouseY, 100, 100);
-    }
-    else{
-      fill(255, 255, 255, 50);
-      ellipse(mouseX, mouseY, 100, 100);
-    }
-  }
-  
-}
 
 function setup(){
   //createCanvas(windowWidth, windowHeight);
   createCanvas(500, 900);
   //posX = random(width);
   //posY = random(height);
-  for(var i=0; i<num; i++){
-    pos[i] = createVector(random(width), -height);
-    speed[i] = createVector(random(-1, 1), random(0, 5));
-    rad[i] = random(50,60);
+  for (var i = 0; i < 50; i++) {
+    ball[i] = new Particle(i,random(30,100), random(0, 128));
   }
-  
-  objectPos = createVector(width/2, height/2);
 }
 
 function draw(){
   background(255, 190, 240);
-  collideUpdate();
-  mouseUpdate();
+  for (var i = 0; i < num; i++) {
+    ball[i].update();
+    ball[i].draw();
+  }
+
+  for(var i=0; i<num; i++){
+    if(ball[i].isHit){
+      fill(255, 0, 0,50);
+      circle(mouseX, mouseY, jiki_rad);
+    }
+    else{
+      fill(255, 255, 255,50);
+      circle(mouseX, mouseY, jiki_rad);
+    }
+  }
+  
+}
+class Particle{
+  //member(attribute)属性
+  constructor(ball_num, diameter, col){
+    this.x = random(width);
+    this.y = random(height);
+    this.size = diameter;
+    this.speedx = random(-1,1);
+    this.speedy = random(0,3);
+    this.color = col;
+    this.visible = true;
+    this.ballnum = ball_num;
+    this.isHit = false;
+  }
+  
+  //method(behavior)振る舞い
+  update(){
+    this.x = this.x + this.speedx;
+    this.y = this.y + this.speedy;
+    
+    if(this.x<0 || this.x>width) this.speedx = -1.0 * this.speedx;
+    if(this.y<0) this.speedy = -1.0 * this.speedy;
+    if(this.y>height + this.size/2) this.y = 0; 
+    
+    if(collideCircleCircle(this.x, this.y, this.size, mouseX, mouseY, jiki_rad)){
+      this.isHit = true;
+    }
+    else{
+      this.isHit = false;
+    }
+  }
+  
+  draw(){
+    noStroke();
+    if(this.visible){
+      fill(this.color, 200);
+      circle(this.x, this.y, this.size);
+      fill(255,255,255);
+      text(this.ballnum, this.x, this.y, 50, 50);
+    }
+  }
 }
