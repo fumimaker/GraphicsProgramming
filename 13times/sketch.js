@@ -5,7 +5,7 @@ var ball = [];
 var jiki_rad = 50;
 var attack_particle = [];
 var prev_time = 0, delta_t = 0;
-var attackRate = 10;
+var attackRate = 50;
 
 function setup() {
   //createCanvas(windowWidth, windowHeight);
@@ -35,7 +35,7 @@ function draw() {
       fill(255, 255, 255, 50);
       circle(mouseX, mouseY, jiki_rad);
     }
-    if (Date.now() - prev_time > 100) {
+    if (Date.now() - prev_time > attackRate) {
       attack_particle.push(new Attack_tama());
       prev_time = Date.now();
     }
