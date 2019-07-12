@@ -6,11 +6,7 @@ var ball = [];
 var jiki_rad = 50;
 var attack_particle = [];
 var prev_time = 0, delta_t = 0;
-var timer500ms = 0;
-function createTama() {
-  attack_particle.push(new Attack_tama());
-  time++;
-}
+
 
 function setup(){
   //createCanvas(windowWidth, windowHeight);
@@ -26,8 +22,6 @@ function setup(){
 
 
 function draw(){
-  delta_t = Date.now()-prev_time;
-  prev_time = Date.now();
   background(255, 190, 240);
   for (var i = 0; i < num; i++) {
     ball[i].update();
@@ -42,8 +36,9 @@ function draw(){
       fill(255, 255, 255, 50);
       circle(mouseX, mouseY, jiki_rad);
     }
-    if(delta_t>500){
+    if(Date.now()-prev_time>500){
       attack_particle.push(new Attack_tama());
+      prev_time = Date.now();
     }
   }
 
@@ -52,7 +47,7 @@ function draw(){
     attack_particle[i].draw();
   }
   fill(255);
-  text(delta_t, windowWidth/2, windowHeight/2, 50, 50);
+  //text(delta_t, windowWidth/2, windowHeight/2, 50, 50);
 }
 
 class Attack_tama{
