@@ -119,14 +119,11 @@ class Particle {
         this.isHit = true;
         this.heart -= attack_particle[i].strength;
       }
-
-      if(collideCircleCircle(this.x, this.y, this.size, mouseX, mouseY, jiki_rad)){
-        isGameFault = 1;
-      }
     }
-
     if (this.heart < 0) this.available = false;
-
+    if (collideCircleCircle(this.x, this.y, this.size, mouseX, mouseY, jiki_rad) && this.available){
+      isGameFault = 1;
+    }
   }
 
   draw() {
