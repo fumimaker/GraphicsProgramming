@@ -14,6 +14,7 @@ function setup(){
   for (var i = 0; i < 50; i++) {
     ball[i] = new Particle(i,random(30,100), random(0, 128));
   }
+  attack_particle.push(new Attack_tama());
 }
 
 function draw(){
@@ -33,11 +34,13 @@ function draw(){
       circle(mouseX, mouseY, jiki_rad);
     }
   }
-  
+  /*
   if(millis()%100==0){
     attack_particle.push(new Attack_tama());
     println(millis());
+    
   }
+  */
 
   for(var i=0; i<attack_particle.length; i++){
     attack_particle[i].update();
@@ -48,10 +51,10 @@ function draw(){
 
 class Attack_tama{
   constructor(){
-    this.x = mouseX;
-    this.y = mouseY;
+    this.x = windowWidth/2;
+    this.y = windowHeight/2;
     this.speedx = 0;
-    this.speedy = 5;
+    this.speedy = -5;
     this.strength = 10;
     this.visible = true;
   }
@@ -64,7 +67,7 @@ class Attack_tama{
 
   draw(){
     fill(255, 255, 255);
-    circle(this.x, this.y, 10);
+    circle(this.x, this.y, 30);
   }
 }
 
