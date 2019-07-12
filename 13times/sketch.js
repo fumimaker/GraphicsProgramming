@@ -1,9 +1,10 @@
 //var posX;
 //var posY;
-var num=5;
+var num = 5;
 var attack_num = 10;
 var ball = [];
-var jiki_rad=50;
+var jiki_rad = 50;
+var attack_particle = [];
 
 function setup(){
   //createCanvas(windowWidth, windowHeight);
@@ -12,10 +13,6 @@ function setup(){
   //posY = random(height);
   for (var i = 0; i < 50; i++) {
     ball[i] = new Particle(i,random(30,100), random(0, 128));
-  }
-
-  for (var i=0; i<num; i++){
-    attack_particle = new Attack();
   }
 }
 
@@ -37,9 +34,19 @@ function draw(){
     }
   }
   
+  if(millis()%100==0){
+    attack_particle.push(new Attack_tama());
+    println(millis());
+  }
+
+  for(var i=0; i<attack_particle.length; i++){
+    attack_particle[i].update();
+    attack_particle[i].draw();
+  }
+
 }
 
-class Attack{
+class Attack_tama{
   constructor(){
     this.x = mouseX;
     this.y = mouseY;
@@ -52,7 +59,7 @@ class Attack{
   update(){
     this.x += this.speedx;
     this.y += this.speedy;
-    if(this.y<0) 
+    if(this.y<0) this.visible = false;
   }
 
   draw(){
