@@ -28,7 +28,7 @@ function draw() {
   }
   fill(255, 255, 255, 50);
   circle(mouseX, mouseY, jiki_rad);
-  if (Date.now() - prev_time > attackRate) {
+  if (Date.now() - prev_time > 1/attackRate*1000) {
     attack_particle.push(new Attack_tama());
     prev_time = Date.now();
   }
@@ -108,7 +108,9 @@ class Particle {
       fill(this.color, 200);
       circle(this.x, this.y, this.size);
       fill(255, 255, 255);
-      text(this.ballnum, this.x, this.y, 50, 50);
+      //text(this.ballnum, this.x, this.y, 50, 50);
+      var pixsize = 50;
+      text(this.heart, this.x-15, this.y, pixsize, pixsize);
     }
   }
 }
