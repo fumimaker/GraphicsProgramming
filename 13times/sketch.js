@@ -24,7 +24,6 @@ function setup() {
 
 
 function draw() {
-
   switch(isGameFault){
     case 0:
       if (Date.now() - prev_time > 1 / attackRate * 1000) {
