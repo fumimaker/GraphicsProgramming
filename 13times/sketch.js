@@ -1,6 +1,5 @@
 //var posX;
 //var posY;
-var num = 5;
 var ball = [];
 var jiki_rad = 50;
 var attack_particle = [];
@@ -15,7 +14,7 @@ function setup() {
   //posX = random(width);
   //posY = random(height);
   for (var i = 0; i < 50; i++) {
-    ball[i] = new Particle(i, random(30, 100), random(-50, 128),random(100, 1000));
+    ball[i] = new Particle( random(30, 100), random(-50, 128),random(100, 1000));
   }
   prev_time = Date.now();
 }
@@ -26,17 +25,8 @@ function draw() {
 
   switch(isGameFault){
     case 0:
-      background(255, 190, 240);
-      for (var i = 0; i < ball.length; i++) {
-        ball[i].update();
-        ball[i].draw();
-      }
       
-      fill(255, 255, 255, 50);
-      circle(mouseX, mouseY, jiki_rad);
-
       if (Date.now() - prev_time > 1 / attackRate * 1000) {
-
         var tmp = attack_particle.length;
         for (var i = 0; i < tmp; i++) {
           if (attack_particle[i].available == false) {
@@ -45,9 +35,26 @@ function draw() {
           }
         }
 
+        tmp = ball.length;
+        for(var i=0; i<tmp; i++){
+          if(ball[i].available == false){
+            ball.splice(i,1);
+            tmp = ball.length;
+          }
+        }
         attack_particle.push(new Attack_tama());
         prev_time = Date.now();
       }
+
+
+      background(255, 190, 240);
+      for (var i = 0; i < ball.length; i++) {
+        ball[i].update();
+        ball[i].draw();
+      }
+
+      fill(255, 255, 255, 50);
+      circle(mouseX, mouseY, jiki_rad);
       for (var i = 0; i < attack_particle.length; i++) {
         attack_particle[i].update();
         attack_particle[i].draw();
@@ -92,14 +99,13 @@ class Attack_tama {
 
 class Particle {
   //member(attribute)属性
-  constructor(ball_num, diameter, col, _heart) {
+  constructor(diameter, col, _heart) {
     this.x = random(width);
     this.y = random(-200,-100);
     this.size = diameter;
     this.speedx = random(-1, 1);
     this.speedy = random(1, 3);
     this.color = col;
-    this.ballnum = ball_num;
     this.isHit = false;
     this.heart = _heart;
     this.available = true;
@@ -134,7 +140,6 @@ class Particle {
       fill(this.color, 200);
       circle(this.x, this.y, this.size);
       fill(255, 255, 255);
-      //text(this.ballnum, this.x, this.y, 50, 50);
       var pixsize = 50;
       text(this.heart, this.x - 15, this.y, pixsize, pixsize);
     }
