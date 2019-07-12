@@ -6,6 +6,8 @@ var attack_particle = [];
 var prev_time = 0, delta_t = 0;
 var attackRate = 100;
 
+var nockBack = 5;
+
 var destroied = 0;
 
 var isGameFault = 0;
@@ -133,31 +135,39 @@ class Particle {
 
   //method(behavior)振る舞い
   update() {
-    this.x = this.x + this.speedx;
-    this.y = this.y + this.speedy;
+    for (var i = 0; i < attack_particle.length; i++) {
+      if (collideCircleCircle(this.x, this.y, this.size, attack_particle[i].x, attack_particle[i].y, attack_particle[i].size)) {
+        this.isHit = true;
+        this.heart -= attack_particle[i].strength;
+      }
+      else {
+        this.isHit = false;
+      }
+    }
+
+    if (this.heart < 0) {
+      this.available = false;
+      pgl.push(new PG(this.x, this.y, 50, 3));
+    }
+    if (collideCircleCircle(this.x, this.y, this.size, mouseX, mouseY, jiki_rad) && this.available) {
+      isGameFault = 1;
+    }
+    if(this.isHit){
+      this.x = this.x + this.speedx;
+      this.y = this.y - random(-3,-1);
+    }
+    else{
+      this.x = this.x + this.speedx;
+      this.y = this.y + this.speedy;
+    }
+    
 
     if(this.y>0) this.through = false;
 
     if (this.x < 0 + this.size / 2 || this.x > width - this.size / 2) this.speedx = -1.0 * this.speedx;
     if (this.y < 0 && !this.through) this.speedy = -1.0 * this.speedy;
     if (this.y > height + this.size / 2) this.y = 0;
-    for (var i = 0; i < attack_particle.length; i++) {
-      if (collideCircleCircle(this.x, this.y, this.size, attack_particle[i].x, attack_particle[i].y, attack_particle[i].size)) {
-        this.isHit = true;
-        this.heart -= attack_particle[i].strength;
-      }
-      else{
-        this.isHit = false;
-      }
-    }
-
-    if (this.heart < 0){
-      this.available = false;
-      pgl.push(new PG(this.x, this.y, 50, 3));
-    }
-    if (collideCircleCircle(this.x, this.y, this.size, mouseX, mouseY, jiki_rad) && this.available){
-      isGameFault = 1;
-    }
+    
   }
 
   draw() {
