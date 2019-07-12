@@ -5,7 +5,9 @@ var ball = [];
 var jiki_rad = 50;
 var attack_particle = [];
 var prev_time = 0, delta_t = 0;
-var attackRate = 100;
+var attackRate = 10;
+
+var isGameFault = 0;
 
 function setup() {
   //createCanvas(windowWidth, windowHeight);
@@ -21,36 +23,47 @@ function setup() {
 
 
 function draw() {
-  background(255, 190, 240);
-  for (var i = 0; i < num; i++) {
-    ball[i].update();
-    ball[i].draw();
-  }
-  fill(255, 255, 255, 50);
-  circle(mouseX, mouseY, jiki_rad);
 
-  if (Date.now() - prev_time > 1 / attackRate * 1000) {
-    
-    var tmp = attack_particle.length;
-    for(var i=0; i<tmp; i++){
-      if(attack_particle[i].available == false){
-        attack_particle.splice(i, 1);
-        tmp = attack_particle.length;
+  switch(isGameFault){
+    case 0:
+      background(255, 190, 240);
+      for (var i = 0; i < num; i++) {
+        ball[i].update();
+        ball[i].draw();
       }
-    }
-    
-    console.log(attack_particle.length);
-    attack_particle.push(new Attack_tama());
-    prev_time = Date.now();
-  }
+      fill(255, 255, 255, 50);
+      circle(mouseX, mouseY, jiki_rad);
+
+      if (Date.now() - prev_time > 1 / attackRate * 1000) {
+
+        var tmp = attack_particle.length;
+        for (var i = 0; i < tmp; i++) {
+          if (attack_particle[i].available == false) {
+            attack_particle.splice(i, 1);
+            tmp = attack_particle.length;
+          }
+        }
+
+        attack_particle.push(new Attack_tama());
+        prev_time = Date.now();
+      }
 
 
-  for (var i = 0; i < attack_particle.length; i++) {
-    attack_particle[i].update();
-    attack_particle[i].draw();
+      for (var i = 0; i < attack_particle.length; i++) {
+        attack_particle[i].update();
+        attack_particle[i].draw();
+      }
+      break;
+
+    case 1: //gameover
+      background(255,255,255,10);
+      fill(0);
+      let fontsize = 40;
+      textSize(fontsize);
+      textAlign(CENTER, CENTER);
+      text("Gameover!", windowWidth/2-50, windowHeight/2);
+      break;
   }
-  fill(255);
-  //text(delta_t, windowWidth/2, windowHeight/2, 50, 50);
 }
 
 class Attack_tama {
@@ -75,7 +88,6 @@ class Attack_tama {
       fill(255, 255, 255);
       circle(this.x, this.y, this.size);
     }
-
   }
 }
 
@@ -107,7 +119,10 @@ class Particle {
         this.isHit = true;
         this.heart -= attack_particle[i].strength;
       }
-      else this.isHit = false;
+
+      if(collideCircleCircle(this.x, this.y, this.size, mouseX, mouseY, jiki_rad)){
+        isGameFault = 1;
+      }
     }
 
     if (this.heart < 0) this.available = false;
