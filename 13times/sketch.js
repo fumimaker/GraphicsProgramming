@@ -4,6 +4,8 @@ var pos=[],speed=[],rad=[];
 var invisible_rad=500;
 var num=5;
 
+var jiki_rad=50;
+
 function collideUpdate(){
   for (var i = 0; i < num; i++) {
     for (var k = i + 1; k < num; k++) {
@@ -44,7 +46,18 @@ function collideUpdate(){
 }
 
 function mouseUpdate(){
-  ellipse(mouseX, mouseY, 100,100);
+  
+  for(var i=0; i<num; i++){
+    if (collideCircleCircle(pos[i].x, pos[i].y, rad[i], mouseX, mouseY, jiki_rad)){
+      fill(128,128,0,50);
+      ellipse(mouseX, mouseY, 100, 100);
+    }
+    else{
+      fill(255, 255, 255, 50);
+      ellipse(mouseX, mouseY, 100, 100);
+    }
+  }
+  
 }
 
 function setup(){
