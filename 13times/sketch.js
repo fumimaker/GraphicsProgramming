@@ -4,7 +4,7 @@ var ball = [];
 var jiki_rad = 50;
 var attack_particle = [];
 var prev_time = 0, delta_t = 0;
-var attackRate = 10;
+var attackRate = 100;
 
 var destroied = 0;
 
@@ -17,7 +17,7 @@ function setup() {
   //posX = random(width);
   //posY = random(height);
   for (var i = 0; i < 50; i++) {
-    ball[i] = new Particle( random(30, 100), random(-50, 128),random(100, 1000));
+    ball[i] = new Particle( random(30, 100), random(-50, 128),Math.round(random(100, 1000)));
   }
   prev_time = Date.now();
 }
