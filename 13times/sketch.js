@@ -1,10 +1,12 @@
-//var posX;
-//var posY;
+var winX = 500;
+var winY = 900;
 var ball = [];
 var jiki_rad = 50;
 var attack_particle = [];
 var prev_time = 0, delta_t = 0;
 var attackRate = 10;
+
+var destroied = 0;
 
 var isGameFault = 0;
 
@@ -25,7 +27,6 @@ function draw() {
 
   switch(isGameFault){
     case 0:
-      
       if (Date.now() - prev_time > 1 / attackRate * 1000) {
         var tmp = attack_particle.length;
         for (var i = 0; i < tmp; i++) {
@@ -46,7 +47,6 @@ function draw() {
         prev_time = Date.now();
       }
 
-
       background(255, 190, 240);
       for (var i = 0; i < ball.length; i++) {
         ball[i].update();
@@ -59,15 +59,17 @@ function draw() {
         attack_particle[i].update();
         attack_particle[i].draw();
       }
+      
       break;
 
     case 1: //gameover
       background(255,255,255,10);
-      fill(0);
+      
       let fontsize = 40;
       textSize(fontsize);
-      textAlign(CENTER, CENTER);
-      text("Gameover!", windowWidth/2-50, windowHeight/2);
+      //textAlign(CENTER, CENTER);
+      fill(0);
+      text("Gameover!", winX / 2 - 100, winY / 2);
       break;
   }
 }
