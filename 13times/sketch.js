@@ -15,7 +15,7 @@ function setup() {
   //posX = random(width);
   //posY = random(height);
   for (var i = 0; i < 50; i++) {
-    ball[i] = new Particle(i, random(30, 100), random(0, 128),random(100, 1000));
+    ball[i] = new Particle(i, random(30, 100), random(-50, 128),random(100, 1000));
   }
   prev_time = Date.now();
 }
@@ -27,10 +27,11 @@ function draw() {
   switch(isGameFault){
     case 0:
       background(255, 190, 240);
-      for (var i = 0; i < num; i++) {
+      for (var i = 0; i < ball.length; i++) {
         ball[i].update();
         ball[i].draw();
       }
+      
       fill(255, 255, 255, 50);
       circle(mouseX, mouseY, jiki_rad);
 
@@ -47,8 +48,6 @@ function draw() {
         attack_particle.push(new Attack_tama());
         prev_time = Date.now();
       }
-
-
       for (var i = 0; i < attack_particle.length; i++) {
         attack_particle[i].update();
         attack_particle[i].draw();
@@ -95,15 +94,16 @@ class Particle {
   //member(attribute)属性
   constructor(ball_num, diameter, col, _heart) {
     this.x = random(width);
-    this.y = random(height);
+    this.y = random(-200,-100);
     this.size = diameter;
     this.speedx = random(-1, 1);
-    this.speedy = random(0, 3);
+    this.speedy = random(1, 3);
     this.color = col;
     this.ballnum = ball_num;
     this.isHit = false;
     this.heart = _heart;
     this.available = true;
+    this.through = true;
   }
 
   //method(behavior)振る舞い
@@ -111,8 +111,10 @@ class Particle {
     this.x = this.x + this.speedx;
     this.y = this.y + this.speedy;
 
+    if(this.y>0) this.through = false;
+
     if (this.x < 0 + this.size / 2 || this.x > width - this.size / 2) this.speedx = -1.0 * this.speedx;
-    if (this.y < 0) this.speedy = -1.0 * this.speedy;
+    if (this.y < 0 && !this.through) this.speedy = -1.0 * this.speedy;
     if (this.y > height + this.size / 2) this.y = 0;
     for (var i = 0; i < attack_particle.length; i++) {
       if (collideCircleCircle(this.x, this.y, this.size, attack_particle[i].x, attack_particle[i].y, attack_particle[i].size)) {
