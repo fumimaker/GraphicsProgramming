@@ -5,7 +5,7 @@ var ball = [];
 var jiki_rad = 50;
 var attack_particle = [];
 var prev_time = 0, delta_t = 0;
-var attackRate = 50;
+var attackRate = 100;
 
 function setup() {
   //createCanvas(windowWidth, windowHeight);
@@ -26,21 +26,12 @@ function draw() {
     ball[i].update();
     ball[i].draw();
   }
-  for (var i = 0; i < num; i++) {
-    if (ball[i].isHit) {
-      fill(255, 0, 0, 50);
-      circle(mouseX, mouseY, jiki_rad);
-    }
-    else {
-      fill(255, 255, 255, 50);
-      circle(mouseX, mouseY, jiki_rad);
-    }
-    if (Date.now() - prev_time > attackRate) {
-      attack_particle.push(new Attack_tama());
-      prev_time = Date.now();
-    }
+  fill(255, 255, 255, 50);
+  circle(mouseX, mouseY, jiki_rad);
+  if (Date.now() - prev_time > attackRate) {
+    attack_particle.push(new Attack_tama());
+    prev_time = Date.now();
   }
-
   for (var i = 0; i < attack_particle.length; i++) {
     attack_particle[i].update();
     attack_particle[i].draw();
