@@ -1,12 +1,11 @@
 //var posX;
 //var posY;
 var num = 5;
-var attack_num = 10;
 var ball = [];
 var jiki_rad = 50;
 var attack_particle = [];
 var prev_time = 0, delta_t = 0;
-
+var attackRate = 10;
 
 function setup() {
   //createCanvas(windowWidth, windowHeight);
@@ -16,9 +15,7 @@ function setup() {
   for (var i = 0; i < 50; i++) {
     ball[i] = new Particle(i, random(30, 100), random(0, 128));
   }
-
   prev_time = Date.now();
-
 }
 
 
@@ -57,9 +54,10 @@ class Attack_tama {
     this.x = mouseX;
     this.y = mouseY;
     this.speedx = 0;
-    this.speedy = -5;
+    this.speedy = -10;
     this.strength = 10;
     this.visible = true;
+    this.size = 10;
   }
 
   update() {
@@ -71,7 +69,7 @@ class Attack_tama {
   draw() {
     if (this.visible) {
       fill(255, 255, 255);
-      circle(this.x, this.y, 10);
+      circle(this.x, this.y, this.size);
     }
 
   }
@@ -100,13 +98,13 @@ class Particle {
     if (this.x < 0 + this.size / 2 || this.x > width - this.size / 2) this.speedx = -1.0 * this.speedx;
     if (this.y < 0) this.speedy = -1.0 * this.speedy;
     if (this.y > height + this.size / 2) this.y = 0;
-
-    if (collideCircleCircle(this.x, this.y, this.size, mouseX, mouseY, jiki_rad)) {
-      this.isHit = true;
+    for(var i=0; i<attack_particle.length; i++){
+      if (collideCircleCircle(this.x, this.y, this.size, attack_particle[i].x, attack_particle[i].y, attack_particle[i].size)) {
+        this.isHit = true;
+        this.heart -= attack_particle[i].strength;
+      }
+      else this.isHit = false;
     }
-    else this.isHit = false;
-
-    if (this.isHit) this.heart -= 10;
 
     if (this.heart < 0) this.visible = false;
     else this.visible = true;
