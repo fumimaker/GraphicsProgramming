@@ -1,9 +1,12 @@
 //var posX;
 //var posY;
-var num=5;
+var num = 5;
 var attack_num = 10;
 var ball = [];
-var jiki_rad=50;
+var jiki_rad = 50;
+var attack_particle = [];
+var prev_time = 0, delta_t = 0;
+
 
 function setup(){
   //createCanvas(windowWidth, windowHeight);
@@ -14,7 +17,11 @@ function setup(){
     ball[i] = new Particle(i,random(30,100), random(0, 128));
   }
 
+  prev_time = Date.now();
+
 }
+
+
 
 function draw(){
   background(255, 190, 240);
@@ -22,7 +29,6 @@ function draw(){
     ball[i].update();
     ball[i].draw();
   }
-
   for(var i=0; i<num; i++){
     if(ball[i].isHit){
       fill(255, 0, 0, 50);
@@ -32,8 +38,40 @@ function draw(){
       fill(255, 255, 255, 50);
       circle(mouseX, mouseY, jiki_rad);
     }
+    if(Date.now()-prev_time>100){
+      attack_particle.push(new Attack_tama());
+      prev_time = Date.now();
+    }
   }
-  
+
+  for(var i=0; i<attack_particle.length; i++){
+    attack_particle[i].update();
+    attack_particle[i].draw();
+  }
+  fill(255);
+  //text(delta_t, windowWidth/2, windowHeight/2, 50, 50);
+}
+
+class Attack_tama{
+  constructor(){
+    this.x = mouseX;
+    this.y = mouseY;
+    this.speedx = 0;
+    this.speedy = -5;
+    this.strength = 10;
+    this.visible = true;
+  }
+
+  update(){
+    this.x += this.speedx;
+    this.y += this.speedy;
+    if(this.y<0) this.visible = false;
+  }
+
+  draw(){
+    fill(255, 255, 255);
+    circle(this.x, this.y, 10);
+  }
 }
 
 class Particle{
@@ -56,7 +94,7 @@ class Particle{
     this.x = this.x + this.speedx;
     this.y = this.y + this.speedy;
     
-    if(this.x<0 || this.x>width) this.speedx = -1.0 * this.speedx;
+    if(this.x<0+this.size/2 || this.x>width-this.size/2) this.speedx = -1.0 * this.speedx;
     if(this.y<0) this.speedy = -1.0 * this.speedy;
     if(this.y>height + this.size/2) this.y = 0; 
     
