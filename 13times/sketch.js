@@ -1,6 +1,7 @@
 //var posX;
 //var posY;
 var num=5;
+var attack_num = 10;
 var ball = [];
 var jiki_rad=50;
 
@@ -11,6 +12,10 @@ function setup(){
   //posY = random(height);
   for (var i = 0; i < 50; i++) {
     ball[i] = new Particle(i,random(30,100), random(0, 128));
+  }
+
+  for (var i=0; i<num; i++){
+    attack_particle = new Attack();
   }
 }
 
@@ -23,16 +28,32 @@ function draw(){
 
   for(var i=0; i<num; i++){
     if(ball[i].isHit){
-      fill(255, 0, 0,50);
+      fill(255, 0, 0, 50);
       circle(mouseX, mouseY, jiki_rad);
     }
     else{
-      fill(255, 255, 255,50);
+      fill(255, 255, 255, 50);
       circle(mouseX, mouseY, jiki_rad);
     }
   }
   
 }
+
+class Attack{
+  constructor(){
+    this.x = mouseX;
+    this.y = mouseY;
+    this.speedx = 0;
+    this.speedy = 5;
+    this.strength = 10;
+    this.visible = true;
+  }
+
+  update(){
+
+  }
+}
+
 class Particle{
   //member(attribute)属性
   constructor(ball_num, diameter, col){
@@ -45,6 +66,7 @@ class Particle{
     this.visible = true;
     this.ballnum = ball_num;
     this.isHit = false;
+    this.heart = 100;
   }
   
   //method(behavior)振る舞い
@@ -59,9 +81,13 @@ class Particle{
     if(collideCircleCircle(this.x, this.y, this.size, mouseX, mouseY, jiki_rad)){
       this.isHit = true;
     }
-    else{
-      this.isHit = false;
-    }
+    else this.isHit = false;
+
+    if(this.isHit) this.heart -= 10; 
+
+    if(this.heart<0) this.visible = false;
+    else this.visible = true;
+
   }
   
   draw(){
