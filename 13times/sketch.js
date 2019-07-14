@@ -70,11 +70,11 @@ function draw() {
         var power = 1;
 
         if(jiki_state==1){
-          times = 2;
+          times = 5;
         } else if (jiki_state==2){
           double = true;
         }else if (jiki_state==3){
-          power = 2;
+          power = 5;
         }else{
           times = 1;
           double = false;
