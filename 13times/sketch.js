@@ -4,11 +4,12 @@ var ball = [];
 var jiki_rad = 50;
 var attack_particle = [];
 var prev_time = 0, delta_t = 0;
-var attackRate = 50;
+var attackRate = 10;
 var ball_num = 50;
 
 var jiki_state = 0;
-
+var effect_time = 30000, effect_prev = 0;
+var effect_counter = 0;
 var destroied = 0;
 
 var isGameFault = 0;
@@ -63,8 +64,38 @@ function draw() {
           isGameFault = 2;
         }
 
-        attack_particle.push(new Attack_tama());
+
+        var times=1;
+        var double=false;
+        var power = 1;
+
+        if(jiki_state==1){
+          times = 2;
+        } else if (jiki_state==2){
+          double = true;
+        }else if (jiki_state==3){
+          power = 2;
+        }else{
+          times = 1;
+          double = false;
+          power = 1;
+        }
+        
+        for (var i = 0; i < times; i++) {
+          attack_particle.push(new Attack_tama(double, power));
+        }
+        
         prev_time = Date.now();
+        
+      }
+
+      if(Date.now() - effect_prev > 1000){
+        if(effect_counter>3){
+          jiki_state = 0;
+          effect_counter = 0;
+        }
+        effect_counter++;
+        effect_prev = Date.now();
       }
 
       background(255, 190, 240);
@@ -116,14 +147,15 @@ function draw() {
 }
 
 class Attack_tama {
-  constructor() {
+  constructor(_double, _power) {
     this.x = mouseX;
     this.y = mouseY;
     this.speedx = 0;
     this.speedy = -10;
-    this.strength = 20;
+    this.strength = 20*_power;
     this.size = 10;
     this.available = true;
+    this.double = _double;
   }
 
   update() {
@@ -139,8 +171,16 @@ class Attack_tama {
 
   draw() {
     if (this.available) {
-      fill(255, 255, 255);
-      circle(this.x, this.y, this.size);
+      if(this.double){
+        fill(255, 255, 255);
+        circle(this.x, this.y, this.size);
+        circle(this.x-15, this.y, this.size);
+        circle(this.x+15, this.y, this.size);
+      }
+      else{
+        fill(255, 255, 255);
+        circle(this.x, this.y, this.size);
+      }
     }
   }
 }
@@ -198,9 +238,17 @@ class Particle {
     if (this.heart < 0) {
       this.available = false;
       pgl.push(new PG(this.x, this.y, 50, 3));
+      if(this.item>0){
+        jiki_state = this.item;
+      }
     }
     if (collideCircleCircle(this.x, this.y, this.size, mouseX, mouseY, jiki_rad) && this.available) {
-      isGameFault = 1;
+      if(this.item==0){
+        isGameFault = 1;
+      }
+      else{
+        jiki_state = this.item;
+      }
     }
     if(this.isHit){
       this.x = this.x + this.speedx;
