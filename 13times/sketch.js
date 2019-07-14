@@ -4,7 +4,8 @@ var ball = [];
 var jiki_rad = 50;
 var attack_particle = [];
 var prev_time = 0, delta_t = 0;
-var attackRate = 100;
+var attackRate = 50;
+var ball_num = 50;
 
 var nockBack = 5;
 
@@ -18,8 +19,11 @@ function setup() {
   createCanvas(500, 900);
   //posX = random(width);
   //posY = random(height);
-  for (var i = 0; i < 50; i++) {
-    ball[i] = new Particle( random(30, 100), random(-50, 128),Math.round(random(100, 1000)));
+  for (var i = 0; i < ball_num; i++) {
+    ball[i] = new Particle( random(30, 100), random(-50, 128),Math.round(random(50, 500)));
+    if(random(100)>90){
+      
+    }
   }
   prev_time = Date.now();
 }
@@ -46,6 +50,11 @@ function draw() {
             tmp = ball.length;
           }
         }
+
+        if(ball.length <= 0){
+          isGameFault = 2;
+        }
+
         attack_particle.push(new Attack_tama());
         prev_time = Date.now();
       }
@@ -79,11 +88,21 @@ function draw() {
     case 1: //gameover
       background(255,255,255,10);
       
-      let fontsize = 40;
+      var fontsize = 40;
       textSize(fontsize);
       //textAlign(CENTER, CENTER);
       fill(0);
       text("Gameover!", winX / 2 - 100, winY / 2);
+      break;
+
+    case 2: //gameclear
+      background(255, 255, 255, 10);
+
+      var fontsize = 40;
+      textSize(fontsize);
+      //textAlign(CENTER, CENTER);
+      fill(255,0,0);
+      text("GameClear!", winX / 2 - 100, winY / 2);
       break;
   }
 }
@@ -94,7 +113,7 @@ class Attack_tama {
     this.y = mouseY;
     this.speedx = 0;
     this.speedy = -10;
-    this.strength = 10;
+    this.strength = 20;
     this.size = 10;
     this.available = true;
   }
@@ -154,7 +173,7 @@ class Particle {
     }
     if(this.isHit){
       this.x = this.x + this.speedx;
-      this.y = this.y - random(-3,-1);
+      this.y = this.y - random(1, 3);
     }
     else{
       this.x = this.x + this.speedx;
@@ -181,6 +200,17 @@ class Particle {
     }
   }
 }
+
+
+
+
+
+
+
+
+
+
+
 
 function P(x, y, r, th, sp) {
   this.x = x;
