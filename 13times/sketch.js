@@ -1,14 +1,11 @@
 var winX = 500;
 var winY = 900;
-
 var ball = [];
 var jiki_rad = 50;
 var attack_particle = [];
 var prev_time = 0, delta_t = 0;
-
 var attackRate = 10;
 var ball_num = 80;
-
 
 var jiki_state = 0;
 var effect_time = 30000, effect_prev = 0;
@@ -139,7 +136,6 @@ function draw() {
       }
       break;
 
-
     case 1: //gameover
       background(255,255,255,10);
       
@@ -182,7 +178,6 @@ class Attack_tama {
       if (collideCircleCircle(this.x, this.y, this.size, ball[i].x, ball[i].y, ball[i].size) && this.available) {
         this.available = false;
       }
-
     }
   }
 
@@ -199,39 +194,6 @@ class Attack_tama {
         circle(this.x, this.y, this.size);
       }
     }
-    if(Date.now()-prev_time>100){
-      attack_particle.push(new Attack_tama());
-      prev_time = Date.now();
-    }
-  }
-
-  for(var i=0; i<attack_particle.length; i++){
-    attack_particle[i].update();
-    attack_particle[i].draw();
-  }
-  fill(255);
-  //text(delta_t, windowWidth/2, windowHeight/2, 50, 50);
-}
-
-class Attack_tama{
-  constructor(){
-    this.x = mouseX;
-    this.y = mouseY;
-    this.speedx = 0;
-    this.speedy = -5;
-    this.strength = 10;
-    this.visible = true;
-  }
-
-  update(){
-    this.x += this.speedx;
-    this.y += this.speedy;
-    if(this.y<0) this.visible = false;
-  }
-
-  draw(){
-    fill(255, 255, 255);
-    circle(this.x, this.y, 10);
   }
 }
 
@@ -274,7 +236,6 @@ class Particle {
   }
 
   //method(behavior)振る舞い
-
   update() {
     for (var i = 0; i < attack_particle.length; i++) {
       if (collideCircleCircle(this.x, this.y, this.size, attack_particle[i].x, attack_particle[i].y, attack_particle[i].size)) {
@@ -284,7 +245,6 @@ class Particle {
       else {
         this.isHit = false;
       }
-
     }
 
     if (this.heart < 0) {
@@ -333,7 +293,6 @@ class Particle {
     }
   }
 }
-
 
 
 
@@ -405,4 +364,3 @@ function PG(x, y, num, r) {
 function mousePressed() {
   pgl.push(new PG(mouseX, mouseY, 10, 5));
 }
-
