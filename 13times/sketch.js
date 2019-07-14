@@ -5,7 +5,7 @@ var jiki_rad = 50;
 var attack_particle = [];
 var prev_time = 0, delta_t = 0;
 var attackRate = 10;
-var ball_num = 50;
+var ball_num = 80;
 
 var jiki_state = 0;
 var effect_time = 30000, effect_prev = 0;
@@ -32,7 +32,7 @@ function setup() {
       tmp = 0;
     }
     
-    ball[i] = new Particle( random(30, 100), random(-50, 128),Math.round(random(50, 500)), tmp);
+    ball[i] = new Particle( random(30, 100), random(-100, 128),Math.round(random(50, 500)), tmp);
   }
   prev_time = Date.now();
 }
@@ -121,6 +121,18 @@ function draw() {
         } else {
           pg.draw();
         }
+      }
+      var fontsize = 30;
+      textSize(fontsize);
+      if(jiki_state==1){
+        fill(0);
+        text("攻撃速度2倍", 0, 50);
+      } else if (jiki_state==2){
+        fill(0);
+        text("攻撃数2倍", 0, 50);
+      } else if (jiki_state==3){
+        fill(0);
+        text("攻撃力2倍", 0, 50);
       }
       break;
 
@@ -250,6 +262,7 @@ class Particle {
         jiki_state = this.item;
       }
     }
+
     if(this.isHit){
       this.x = this.x + this.speedx;
       this.y = this.y - random(1, 3);
@@ -274,6 +287,7 @@ class Particle {
       fill(this.color, 200);
       circle(this.x, this.y, this.size);
       fill(255, 255, 255);
+      textSize(15)
       var pixsize = 50;
       text(this.heart, this.x - 15, this.y, pixsize, pixsize);
     }
