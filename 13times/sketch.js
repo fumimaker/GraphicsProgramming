@@ -7,7 +7,7 @@ var prev_time = 0, delta_t = 0;
 var attackRate = 50;
 var ball_num = 50;
 
-var nockBack = 5;
+var jiki_state = 0;
 
 var destroied = 0;
 
@@ -20,10 +20,18 @@ function setup() {
   //posX = random(width);
   //posY = random(height);
   for (var i = 0; i < ball_num; i++) {
-    ball[i] = new Particle( random(30, 100), random(-50, 128),Math.round(random(50, 500)));
-    if(random(100)>90){
-      
+    var item_tmp = random(100), tmp;
+    if(item_tmp>95){
+      tmp = 1; // speed
+    } else if (item_tmp > 90){
+      tmp = 2; // num double
+    } else if (item_tmp > 85){
+      tmp = 3; // power
+    } else {
+      tmp = 0;
     }
+    
+    ball[i] = new Particle( random(30, 100), random(-50, 128),Math.round(random(50, 500)), tmp);
   }
   prev_time = Date.now();
 }
@@ -137,19 +145,42 @@ class Attack_tama {
   }
 }
 
+
+
+
+
+
+
+
+
+
 class Particle {
   //member(attribute)属性
-  constructor(diameter, col, _heart) {
+  constructor(diameter, col, _heart, _item) {
     this.x = random(width);
     this.y = random(-200,-100);
     this.size = diameter;
     this.speedx = random(-1, 1);
     this.speedy = random(1, 3);
-    this.color = col;
     this.isHit = false;
     this.heart = _heart;
     this.available = true;
     this.through = true;
+    this.item = _item; 
+    switch (_item) {
+      case 0:
+        this.color = col;
+        break;
+      case 1:
+        this.color = color(255, 0, 0, random(128));
+        break;
+      case 2:
+        this.color = color(0, 255, 0, random(128));
+        break;
+      case 3:
+        this.color = color(0, 0, 255, random(128));
+        break;
+    }
   }
 
   //method(behavior)振る舞い
@@ -200,6 +231,10 @@ class Particle {
     }
   }
 }
+
+
+
+
 
 
 
