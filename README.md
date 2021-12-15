@@ -2,7 +2,7 @@
 グラフィックプログラミングで提出した課題2~13までを公開しています。  
 最終課題(13times)ではどこかで見たことあるようなシューティングゲームを作りました．  
 学校のサーバーで公開しましたので良ければ遊んでください
-http://web.sfc.keio.ac.jp/~s17804fm/GraphicsProgramming2019S/index.html  
+https://web.sfc.keio.ac.jp/~fumimake/GraphicsProgramming2019S/index.html
 
 
 # 13timesの遊び方
